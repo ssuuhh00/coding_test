@@ -39,7 +39,18 @@ face에 해당하는 의상이 crow_mask, blue_sunglasses, smoky_makeup이므로
 2. blue_sunglasses
 3. smoky_makeup
 '''
+clothes = [["yellow_hat", "headgear"], ["blue_sunglasses", "eyewear"], ["green_turban", "headgear"]]
 
 def solution(clothes):
-    answer = 0
-    return answer
+    answer = 1
+    dict = {}
+    for i in clothes:
+        if i[1] in dict:
+            dict[i[1]] += 1
+        else:
+            dict[i[1]] = 1
+    for i in dict:
+        answer *= (dict[i]+1)
+    return answer - 1
+
+print(solution(clothes))
