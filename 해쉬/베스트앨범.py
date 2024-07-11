@@ -37,13 +37,30 @@ plays = [500, 600, 150, 800, 2500]
 from collections import Counter
 
 def solution(genres, plays):
-    gc = Counter(genres)
-    print(gc)
-    dict = {}
+    from collections import defaultdict
     
-    dict = genres
-    print(dict)
-    answer = []
-    return answer
+    # Step 1: 장르별 총 재생 횟수를 계산
+    genre_total_plays = defaultdict(int)
+    for genre, play in zip(genres, plays):
+        genre_total_plays[genre] += play
+    
+    # Step 2: 장르 내 노래들에 대해 (재생 횟수, 고유번호) 튜플을 저장
+    songs_by_genre = defaultdict(list)
+    for idx, (genre, play) in enumerate(zip(genres, plays)):
+        songs_by_genre[genre].append((play, idx))
+    
+    # Step 3: 장르별로 노래들을 재생 횟수와 고유번호로 정렬
+    for genre in songs_by_genre:
+        songs_by_genre[genre].sort(key=lambda x: (-x[0], x[1]))
+    
+    # Step 4: 장르별 총 재생 횟수로 장르를 정렬
+    sorted_genres = sorted(genre_total_plays.keys(), key=lambda g: -genre_total_plays[g])
+    
+    # Step 5: 베스트 앨범에 각 장르에서 최대 두 곡씩 수록
+    best_album = []
+    for genre in sorted_genres:
+        best_album.extend([song[1] for song in songs_by_genre[genre][:2]])
+    
+    return best_album
 
-solution(genres, plays)
+print(solution(genres, plays))
